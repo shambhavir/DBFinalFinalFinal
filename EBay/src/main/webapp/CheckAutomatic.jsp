@@ -27,7 +27,7 @@
 		String userName = (String) session.getAttribute("username");
 		
 		if(bidIncrement < upperLimit){
-
+		//System.out.println("Name: " + userName);
 		String insertBid = "INSERT INTO automaticBid(username, AID, bidIncrement, upperLimit)" + " VALUE(?,?,?,?)";
 		PreparedStatement ps = con.prepareStatement(insertBid);
 		
@@ -48,6 +48,7 @@
 		
 		String selectBid = "SELECT * FROM automaticBid";
 		ResultSet result = stmt.executeQuery(selectBid);
+		int aucID = 0;
 
 		%>
 
@@ -63,6 +64,7 @@
 			<%
 			//parse out the results
 			while (result.next()) {
+				aucID = result.getInt("AID");
 			%>
 			<tr style="padding: 1em">
 				<td style="padding: 1em"><%=result.getInt("AID")%></td>
@@ -76,6 +78,22 @@
 			}
 			%>
 		</table><%
+		String getEvents = "SELECT * FROM Events WHERE AID = " + aucID;
+		result = stmt.executeQuery(getEvents);
+		float currPrice = 0;
+		
+		while(result.next()){
+			currPrice = result.getInt("itemCurrentPrice");
+		}
+		
+		String checkOtherBuyers = "INSERT INTO bid(AID, username, itemCurrentPrice)" + 
+		"VALUE(?,?,?)";
+		ps = con.prepareStatement(checkOtherBuyers);
+
+		ps.setInt(1, aucID);
+		ps.setString(2, userName);
+		ps.setFloat(3, currPrice);
+		ps.executeUpdate();
 		//Close the connection. Don't forget to do it, otherwise you're keeping the resources of the server allocated.
 		con.close();
 		//Redirect to show auction afterwards

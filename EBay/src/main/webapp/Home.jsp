@@ -23,6 +23,11 @@
 		<input type="submit" value="See your alerts" />
 	</form>
 	<br>
+	Or
+	<form method="post" action="ViewHistory.jsp">
+		<input type="submit" value="View your auction history" />
+	</form>
+	<br>
 	<form method="post" action="Login.jsp">
 		<input type="submit" value="Logout" />
 	</form>

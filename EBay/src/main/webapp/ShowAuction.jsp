@@ -60,7 +60,9 @@
 			while (result.next()) {
 				itemsToCheck.add(new AutomaticBid(result.getInt("AID"), result.getFloat("bidIncrement"),
 				result.getFloat("upperLimit"), result.getString("username")));
+				//System.out.println("SAName: " + result.getString("username"));
 			}
+			//System.out.println("Size: " + itemsToCheck.size());
 			if (itemsToCheck.size() != 0) {
 				float maxInc = 0;
 				int person = 0;
@@ -69,14 +71,19 @@
 				maxInc = itemsToCheck.get(i).getbidIncrement();
 				person = i;
 			}
-				}
+			//System.out.println("Equals: " + itemsToCheck.get(i).getUsername().equals(userName));
+				}//150 --> 500 admin
+				//5 --> 100 user1
 
 				String getInfo = "SELECT * FROM Events WHERE AID = " + itemsToCheck.get(person).getAID();
+				//System.out.println("Person: " + itemsToCheck.get(person).getAID());
 				result = stmt.executeQuery(getInfo);
 				while (result.next()) {
-			float newPrice = result.getFloat("itemCurrentPrice") + maxInc;
-			System.out.println(newPrice);
-			if (newPrice < itemsToCheck.get(person).getupperLimit()) {
+					float newPrice = result.getFloat("itemCurrentPrice") + maxInc;
+			//System.out.println(newPrice);
+			System.out.println("new: " + (result.getFloat("itemCurrentPrice") + maxInc));
+			if (newPrice < itemsToCheck.get(person).getupperLimit() && newPrice > result.getFloat("itemCurrentPrice")) {
+				
 				String updateEvents = "UPDATE Events SET itemCurrentPrice = ?, username = ? WHERE AID = ? AND itemCurrentPrice <= ? AND status <> \"Closed\" AND ownerUsername <> ? AND username <> ?";
 				PreparedStatement ps = con.prepareStatement(updateEvents);
 
@@ -87,6 +94,10 @@
 				ps.setString(5, userName);
 				ps.setString(6, userName);
 				ps.executeUpdate();
+				
+				
+				System.out.println("AID: " + itemsToCheck.get(person).getAID() + " username: " + userName + " price: " + newPrice);
+
 			}
 
 				}
