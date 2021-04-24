@@ -13,25 +13,19 @@
 	<br> You can...
 	<form method="post" action="CreateAuction.jsp">
 		<input type="submit" value="Create an auction" />
-	</form>
-	Or
+	</form>Or
 	<form method="post" action="ShowAuction.jsp">
 		<input type="submit" value="Participate in an auction" />
-	</form>
-	Or
+	</form> Or
 	<form method="post" action="ShowAlert.jsp">
 		<input type="submit" value="See your alerts" />
-	</form>
-	<br>
-	Or
+	</form> Or
+	<form method="post" action="MessagePortal.jsp">
+		<input type="submit" value="FAQs" />
+	</form> Or
 	<form method="post" action="ViewHistory.jsp">
-		<input type="submit" value="View your auction history" />
+		<input type="submit" value="See your History" />
 	</form>
-	<br>
-	<form method="post" action="Login.jsp">
-		<input type="submit" value="Logout" />
-	</form>
-
 	<%
 	try {
 
@@ -44,7 +38,9 @@
 		PreparedStatement ps = null;
 
 		Timestamp currentDayTime = new java.sql.Timestamp(new java.util.Date().getTime());
+		String usertype = (String)session.getAttribute("username");
 		String userName = (String)session.getAttribute("username");
+		System.out.println(usertype);
 
 		if (userName.equals("Admin") || userName.equals("admin")) {
 	%>
@@ -57,11 +53,23 @@
 		<input type="submit" value="Generate Sales Report" />
 	</form>
 	<br>
-	<form method="post" action="Login.jsp">
-		<input type="submit" value="Logout" />
-	</form>
 	<%
 	}
+		if (usertype.contains("CustomerRep") || usertype.equals("customerrep")) {%>
+		Or if you are a Customer Rep
+	<form method="post" action="SearchUser.jsp">
+		<input type="submit" value="Edit Account Information" />
+	</form> Or
+	<form method="post" action="RemoveAuction.jsp">
+		<input type="submit" value="Remove an Auction" />
+	</form>Or
+	<form method="post" action="RemoveBid.jsp">
+		<input type="submit" value="Remove a Bid" />
+	</form>
+	<br>
+	<%
+			
+		}
 	//Make a SELECT query from Events to remove closed auctions
 	String checkClose = "SELECT * FROM Events WHERE itemEndDateTime <= \"" + currentDayTime + "\" AND status = \"Open\"";
 	ResultSet result = stmt.executeQuery(checkClose);
@@ -128,7 +136,9 @@
 	%>
 	</table>
 
-
+	<form method="post" action="Login.jsp">
+		<input type="submit" value="Logout" />
+	</form>
 	<%
 	} catch (Exception e) {
 	out.print(e);

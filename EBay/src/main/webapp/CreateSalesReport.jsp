@@ -11,13 +11,50 @@
 </head>
 <body>
 
-	<form method="post" action="ShowAuction.jsp">
-		<input type="submit" value="Back to All Auctions" />
+	<!--<form method="post" action="ManualAuction.jsp">
+		<input type="submit" value="Manually Bid" />
 	</form>
-	<form method="post" action="Home.jsp">
-		<input type="submit" value="Go to Home" />
+	<form method="post" action="AutomaticAuction.jsp">
+		<input type="submit" value="Automatically Bid" />
+	</form>
+	<form method="post" action="Search.jsp">
+		<input type="submit" value="Filter Auctions" />
+	</form>
 	<br>
-	<% try {
+	Sort:
+	<form method="post" action="Sort.jsp">
+		  <input type="radio" name="command" value="itemName"/>Alphabetically by name
+		  <br>
+		  <input type="radio" name="command" value="itemCurrentPrice"/>Price (low to high)
+		  <br>
+		  <input type="radio" name="command" value="itemType"/>Type of item
+		  <br>
+		  <input type="radio" name="command" value="itemEndDateTime"/>End date and time (closest to farthest)
+		  <br>
+		  <input type="submit" value="submit" />
+		</form>
+	<br> -->
+	<h3>Generate Sales Reports for:</h3>
+	<form method="post" action="ViewTotalEarnings.jsp">
+		<input type="submit" value="Total Earnings" />
+	</form>
+	<form method="post" action="ViewEarningsPerItem.jsp">
+		<input type="submit" value="Earnings per item" />
+	</form>
+	<form method="post" action="ViewEarningsPerItemType.jsp">
+		<input type="submit" value="Earnings per item-type" />
+	</form>
+	<form method="post" action="ViewEarningsPerEndUser.jsp">
+		<input type="submit" value="Earnings per end-user" />
+	</form>
+	<form method="post" action="ViewBestBuyer.jsp">
+		<input type="submit" value="Best Buyers" />
+	</form>
+	<form method="post" action="ViewBestSellingItems.jsp">
+		<input type="submit" value="Best Selling Items" />
+	</form>
+	<br>
+	<%-- <%-- <% try {
 	
 			//Get the database connection
 			ApplicationDB db = new ApplicationDB();	
@@ -26,28 +63,9 @@
 			//Create a SQL statement
 			Statement stmt = con.createStatement();
 	
-			float itemCurrentPrice = Float.valueOf(request.getParameter("itemCurrentPrice"));
-			String status = request.getParameter("status");
-			String itemType = request.getParameter("itemType");
 			
 			//Make a SELECT query from Events
 			String str = "SELECT * FROM Events";
-			
-			if(itemCurrentPrice ==  0 && status.equals("")){
-				str = "SELECT * FROM Events WHERE itemType = \"" + itemType + "\"";
-			}else if(itemCurrentPrice == 0 && itemType.equals("")){
-				str = "SELECT * FROM Events WHERE status = \"" + status + "\"";
-			}else if(status.equals("") && itemType.equals("")){
-				str = "SELECT * FROM Events WHERE itemCurrentPrice <= " + itemCurrentPrice;
-			}else if(itemCurrentPrice == 0){
-				str = "SELECT * FROM Events WHERE status = \"" + status + "\" AND itemType = \"" + itemType + "\"";
-			}else if(status.equals("")){
-				str = "SELECT * FROM Events WHERE itemCurrentPrice <= " + itemCurrentPrice + " AND itemType = \"" + itemType + "\"";
-			}else if(itemType.equals("")){
-				str = "SELECT * FROM Events WHERE itemCurrentPrice <= " + itemCurrentPrice + " AND status = \"" + status + "\"";
-			}else{
-				str = "SELECT * FROM Events WHERE itemCurrentPrice <= " + itemCurrentPrice + " AND status = \"" + status + "\" AND itemType = \"" + itemType + "\"";
-			} 
 			//Run the query against the database.
 			ResultSet result = stmt.executeQuery(str);
 		%>
@@ -88,7 +106,7 @@
 	<%} catch (Exception e) {
 			out.print(e);
 		}%>
-
+ --%> 
 
 </body>
 </html>
