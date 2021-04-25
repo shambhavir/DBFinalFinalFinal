@@ -1,0 +1,9 @@
+ADMIN CRED: 
+  USERNAME: Admin
+  PASSWORD: pass1
+  USER TYPE: admin
+  
+CUSTOMER REP CRED: 
+  USERNAME: CustomerRep1
+  PASSWORD: pass2
+  USER TYPE: rep
